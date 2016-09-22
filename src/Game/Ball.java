@@ -1,15 +1,14 @@
 package Game;
 
-import com.senac.SimpleJava.Graphics.Color;
 import com.senac.SimpleJava.Graphics.Sprite;
 
 public class Ball extends Sprite {
 	
-	private int dy = 1;
+	private int dy = -1;
 	private int dx = 1;
 	
 	public Ball() {
-		super(16,16,Color.BLACK);		
+		super(Config.ballRadius,Config.ballRadius,Config.COL4);		
 	}
 
 	public void move() {
@@ -22,6 +21,22 @@ public class Ball extends Sprite {
 
 	public void invertVertical() {
 		dy *= -1;
-	}	
+	}
+	
+	public void resetVertical() {
+		dy = -1;
+	}
+	
+	public void verticalDown() {
+		dy = 1;
+	}
+
+	public void horizonRigh() {
+		dx = 1;
+	}
+
+	public void horizonLeft() {
+		dx = -1;
+	}
 	
 }
