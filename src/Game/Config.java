@@ -18,7 +18,7 @@ public class Config {
 	
 	static int paddleLength = 100;
 	static int paddleHeight = 10;
-	static int paddleMovement = 12;
+	static int paddleMovement = 3;
 	static int paddleMargin = 30;
 	
 	static int brickLength = 49;

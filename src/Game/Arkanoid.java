@@ -39,8 +39,7 @@ public class Arkanoid extends GraphicApplication {
 	protected void setup() {
 		this.setTitle("Arkanoid");
 		this.setResolution(Resolution.HIGHRES);
-		this.setFramesPerSecond(120);
-		
+		this.setFramesPerSecond(80);		
 
 		// Board
 		board = new Board(Config.boundaryX, Config.boundaryY, Config.COL2);
@@ -57,9 +56,7 @@ public class Arkanoid extends GraphicApplication {
 		if (random.nextBoolean()) {
 			ball.invertHorizontal();
 		}
-		
 	}
-
 	
 	/*
 	 * =========================
@@ -80,7 +77,7 @@ public class Arkanoid extends GraphicApplication {
 			gameState = 0;					// Alters the state to loop the mechanics;
 			levelCounter = 0;				// Resets the timer for the opening message;
 			ballState = false;				// Resets the ball position;
-			ball.resetVertical();
+			ball.resetVertical();			// Points the ball up;
 			if (random.nextBoolean()) {		// Randomizes ball's X direction; 
 				ball.invertHorizontal();
 			}
@@ -91,7 +88,7 @@ public class Arkanoid extends GraphicApplication {
 			gameState = 0;					// Alters the state to loop the mechanics;
 			levelCounter = 0;				// Resets the timer for the opening message;
 			ballState = false;				// Resets the ball position;
-			ball.resetVertical();
+			ball.resetVertical();			// Points the ball up;
 			if (random.nextBoolean()) {		// Randomizes ball's X direction; 
 				ball.invertHorizontal();
 			}
@@ -102,12 +99,12 @@ public class Arkanoid extends GraphicApplication {
 			gameState = 0;					// Alters the state to loop the mechanics;
 			levelCounter = 0;				// Resets the timer for the opening message;
 			ballState = false;				// Resets the ball position;
-			ball.resetVertical();
+			ball.resetVertical();			// Points the ball up;
 			if (random.nextBoolean()) {		// Randomizes ball's X direction; 
 				ball.invertHorizontal();
 			}
 			break;
-		case 4: // Tester
+		case 4: // Level just for tests
 			drawLevel(4);					// Place the bricks according to the level;
 			level = 99;						// Keeps track of the current level;
 			gameState = 0;					// Alters the state to loop the mechanics;
@@ -128,7 +125,7 @@ public class Arkanoid extends GraphicApplication {
 			
 			// Info
 			canvas.putText(660, 400, 18, "Score: " + score);
-			canvas.putText(660, 430, 18, "Lives: " + lives);
+			canvas.putText(660, 430, 18, "Lives: 0");
 			canvas.putText(660, 460, 18, "High score: " + highScore);
 			canvas.putText(78, 235, 100, "Game Over!");
 			break;
@@ -214,6 +211,16 @@ public class Arkanoid extends GraphicApplication {
 			gameState = 3;
 			reset++;
 		}
+		if (score >= 24 && reset == 3) {
+			for (int i = 0; i < 70; i++) {
+				alive[i] = 0;
+				aliveS[i] = 0;
+			}
+			gameState = 9;
+			reset++;
+		}
+		
+		
 
 		levelCounter++;
 		redraw();
@@ -235,7 +242,48 @@ public class Arkanoid extends GraphicApplication {
 		}
 	}
 	
+	
+	
+	private boolean moveRight = false;
+	private boolean moveLeft = false;
+	
 	private void controller(Point paddlePosition) {
+
+////////////////////////////////////////////////////////////////////////
+		bindKeyPressed("LEFT", new KeyboardAction() {
+			@Override
+			public void handleEvent() {
+				moveRight = true;
+			}
+		});
+		bindKeyReleased("LEFT", new KeyboardAction() {
+			@Override
+			public void handleEvent() {
+				moveRight = false;
+			}
+		});
+		if (paddlePosition.x > Config.vertexX && moveRight == true) {
+			paddle.move(Config.paddleMovement * -1, 0);
+		}
+		
+		bindKeyPressed("RIGHT", new KeyboardAction() {
+			@Override
+			public void handleEvent() {
+				moveLeft = true;
+			}
+		});
+		bindKeyReleased("RIGHT", new KeyboardAction() {
+			@Override
+			public void handleEvent() {
+				moveLeft = false;
+			}
+		});
+		if (paddlePosition.x < Config.boundaryX + Config.vertexX - Config.paddleLength && moveLeft == true) {
+			paddle.move(Config.paddleMovement, 0);
+		}
+////////////////////////////////////////////////////////////////////////		
+		
+		/*
 		bindKeyPressed("LEFT", new KeyboardAction() {
 			@Override
 			public void handleEvent() {
@@ -253,6 +301,7 @@ public class Arkanoid extends GraphicApplication {
 				}
 			}
 		});
+		*/
 
 		bindKeyPressed("SPACE", new KeyboardAction() {
 			@Override
@@ -262,6 +311,7 @@ public class Arkanoid extends GraphicApplication {
 				}
 			}
 		});
+		
 		/*
 		bindKeyPressed("UP", new KeyboardAction() {
 			@Override
